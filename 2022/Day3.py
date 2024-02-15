@@ -1,6 +1,4 @@
-file_path = r'C:\Users\kelly\Downloads\input3_2022.txt'
-
-with open(file_path) as file:
+with open('input3.txt', 'r') as file:
     content = [x.strip() for x in file.readlines()]
 
 
