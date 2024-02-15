@@ -12,3 +12,6 @@ for line in content:
         res += int(line)
 
 print("Part 1:", max(cal_list))
+print("Part 2:", sum(sorted(cal_list, reverse=True)[0:3]))
+
+
