@@ -1,9 +1,7 @@
 with open('input5.txt', 'r') as file:
     stack, instructions = [part.split("\n") for part in file.read().split("\n\n")]
 
-
 stacks = []
-
 # Append the letters to the pile
 for line in stack:
     new_line = "  " + line
@@ -19,4 +17,15 @@ for line in stack:
             if not found:
                 stacks.append([pile, [x]])
 
-print(stacks)
+
+instructions.pop()  # Delete '' from the list
+
+for line in instructions:
+    _, amount, _, pile_before, _, pile_after = line.split(' ')
+    pile_to_remove_from = sorted(stacks)[int(pile_before) - 1][1]
+    items = (pile_to_remove_from[:int(amount)])  # Items in the pile that should be removed
+    print(items)
+
+
+
+
