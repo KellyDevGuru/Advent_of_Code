@@ -23,8 +23,11 @@ instructions.pop()  # Delete '' from the list
 for line in instructions:
     _, amount, _, pile_before, _, pile_after = line.split(' ')
     pile_to_remove_from = sorted(stacks)[int(pile_before) - 1][1]
+    pile_to_add_to = sorted(stacks)[int(pile_after) - 1][1]
     items = (pile_to_remove_from[:int(amount)])  # Items in the pile that should be removed
+    for _ in range(int(amount)):
+        pile_to_remove_from.pop(0)
+    for x in items:
+        pile_to_add_to.insert(0, x)
 
-
-
-
+print(sorted(stacks))
