@@ -24,7 +24,6 @@ for line in instructions:
     _, amount, _, pile_before, _, pile_after = line.split(' ')
     pile_to_remove_from = sorted(stacks)[int(pile_before) - 1][1]
     items = (pile_to_remove_from[:int(amount)])  # Items in the pile that should be removed
-    print(items)
 
 
 
