@@ -27,7 +27,7 @@ for line in instructions:
     items = (pile_to_remove_from[:int(amount)])  # Items in the pile that should be removed
     for _ in range(int(amount)):
         pile_to_remove_from.pop(0)
-    for x in items:
+    for x in reversed(items):  # Remove reversed() for solution of Part 1
         pile_to_add_to.insert(0, x)
 
 print(sorted(stacks))
