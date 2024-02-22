@@ -69,3 +69,20 @@ directories_under_threshold = find_directories_under_size(root_node, 100000)
 sum_of_sizes = sum(directory.total_size() for directory in directories_under_threshold)
 
 print("Sum of total sizes of directories under 100000:", sum_of_sizes)
+
+
+def get_all_children(node):
+    children = []
+    if not node.is_file:
+        for child in node.children:
+            children.append(child)
+            children.extend(get_all_children(child))
+    return children
+
+
+unused_space = 70000000 - root_node.total_size()
+size_to_be_deleted = 30000000 - unused_space
+values_of_all_dirs = sorted([child.total_size() for child in get_all_children(root_node) if not child.is_file])
+result = min((x for x in values_of_all_dirs if x > size_to_be_deleted), default=None)
+
+print("Directory that should be deleted has size:", result)
