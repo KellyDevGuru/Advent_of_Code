@@ -1,6 +1,6 @@
-import math
+import matplotlib.pyplot as plt
 
-with open('input9.txt', 'r') as file:
+with open('inputtest.txt', 'r') as file:
     lines = [x.strip() for x in file.readlines()]
 
 x = y = 0
@@ -57,3 +57,19 @@ for c in lines:
         xt += (int(c[2]) - 1)
 
 print(len(set(coordinatest)))
+
+
+def draw_coordinates(c):
+    x_values = [coord[0] for coord in c]
+    y_values = [coord[1] for coord in c]
+
+    plt.plot(x_values, y_values, color = 'red', markersize=2)
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title('Coordinates')
+    plt.grid(True)
+    plt.show()
+
+
+draw_coordinates(coordinatest)
+
