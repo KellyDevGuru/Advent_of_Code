@@ -1,86 +1,29 @@
 import matplotlib.pyplot as plt
-import math
 
-with open('input9.txt', 'r') as file:
-    lines = [x.strip() for x in file.readlines()]
+with open('input9.txt') as f:
+    inp = f.read().strip().split('\n')
 
-x = y = 0
-xt = yt = 0
-coordinates = []
-coordinatest = []
+locs = set()
+rope = [[0, 0] for _ in range(10)]
+locs.add(tuple(rope[-1]))
 
+for row in inp:
+    d, s = row.split()
+    s = int(s)
+    for _ in range(s):
+        dy, dx = {'U': (1, 0), 'D': (-1, 0),
+                  'L': (0, -1), 'R': (0, 1)}[d]
+        rope[0][0] += dy
+        rope[0][1] += dx
+        for tail in range(1,10):
+            dy = rope[tail-1][0] - rope[tail][0]
+            dx = rope[tail-1][1] - rope[tail][1]
+            if max(abs(dy), abs(dx)) > 1:
+                rope[tail][0] += dy//abs(dy) if dy else 0
+                rope[tail][1] += dx//abs(dx) if dx else 0
+            locs.add(tuple(rope[-1]))
 
-def calculate_distance(x1, y1, x2, y2):
-    distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-    return distance
-
-
-index = 0
-for c in lines:
-    n = c.split()
-
-    if n[0] == 'U':
-        for i in range(int(n[1])):
-            index += 1
-            y += 1
-            coordinates.append((x, y))
-            if calculate_distance(x, y, xt, yt) <= math.sqrt(2):
-                coordinatest.append((xt, yt))
-            else:
-                xt = x
-                yt = y - 1
-                coordinatest.append((xt, yt))
-            if index < 9:
-                xt = x
-                yt = y
-
-    elif n[0] == 'D':
-        for i in range(int(n[1])):
-            index += 1
-            y -= 1
-            coordinates.append((x, y))
-            if calculate_distance(x, y, xt, yt) <= math.sqrt(2):
-                coordinatest.append((xt, yt))
-            else:
-                xt = x
-                yt = y + 1
-                coordinatest.append((xt, yt))
-            if index < 9:
-                xt = x
-                yt = y
-
-    elif n[0] == 'L':
-        for i in range(int(n[1])):
-            index += 1
-            x -= 1
-            coordinates.append((x, y))
-            if calculate_distance(x, y, xt, yt) <= math.sqrt(2):
-                coordinatest.append((xt, yt))
-            else:
-                yt = y
-                xt = x + 1
-                coordinatest.append((xt, yt))
-            if index < 9:
-                xt = x
-                yt = y
-
-    elif n[0] == 'R':
-        for i in range(int(n[1])):
-            index += 1
-            x += 1
-            coordinates.append((x, y))
-            if calculate_distance(x, y, xt, yt) <= math.sqrt(2):
-                coordinatest.append((xt, yt))
-            else:
-                yt = y
-                xt = x - 1
-                coordinatest.append((xt, yt))
-            if index < 9:
-                xt = x
-                yt = y
-
-
-print(len(set(coordinatest)))
+print(len(locs))
 
 
 def draw_coordinates(c):
@@ -95,4 +38,4 @@ def draw_coordinates(c):
     plt.show()
 
 
-draw_coordinates(coordinatest)
+draw_coordinates(locs)
