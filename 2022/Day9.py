@@ -15,22 +15,28 @@ def calculate_distance(x1, y1, x2, y2):
     return distance
 
 
+index = 0
 for c in lines:
     n = c.split()
 
     if n[0] == 'U':
         for i in range(int(n[1])):
+            index += 1
             y += 1
             coordinates.append((x, y))
-            if calculate_distance(x,y,xt,yt) <= math.sqrt(2):
-                coordinatest.append((xt,yt))
+            if calculate_distance(x, y, xt, yt) <= math.sqrt(2):
+                coordinatest.append((xt, yt))
             else:
                 xt = x
                 yt = y - 1
-                coordinatest.append((xt,yt))
+                coordinatest.append((xt, yt))
+            if index < 9:
+                xt = x
+                yt = y
 
-    if n[0] == 'D':
+    elif n[0] == 'D':
         for i in range(int(n[1])):
+            index += 1
             y -= 1
             coordinates.append((x, y))
             if calculate_distance(x, y, xt, yt) <= math.sqrt(2):
@@ -39,9 +45,13 @@ for c in lines:
                 xt = x
                 yt = y + 1
                 coordinatest.append((xt, yt))
+            if index < 9:
+                xt = x
+                yt = y
 
-    if n[0] == 'L':
+    elif n[0] == 'L':
         for i in range(int(n[1])):
+            index += 1
             x -= 1
             coordinates.append((x, y))
             if calculate_distance(x, y, xt, yt) <= math.sqrt(2):
@@ -50,9 +60,13 @@ for c in lines:
                 yt = y
                 xt = x + 1
                 coordinatest.append((xt, yt))
+            if index < 9:
+                xt = x
+                yt = y
 
-    if n[0] == 'R':
+    elif n[0] == 'R':
         for i in range(int(n[1])):
+            index += 1
             x += 1
             coordinates.append((x, y))
             if calculate_distance(x, y, xt, yt) <= math.sqrt(2):
@@ -61,8 +75,13 @@ for c in lines:
                 yt = y
                 xt = x - 1
                 coordinatest.append((xt, yt))
+            if index < 9:
+                xt = x
+                yt = y
+
 
 print(len(set(coordinatest)))
+
 
 def draw_coordinates(c):
     x_values = [coord[0] for coord in c]
@@ -77,5 +96,3 @@ def draw_coordinates(c):
 
 
 draw_coordinates(coordinatest)
-
-
