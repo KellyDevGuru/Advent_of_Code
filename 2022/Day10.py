@@ -39,7 +39,7 @@ first = True
 while i < len(program):
 
     if register <= cycle % 40 <= register + 2:
-        screen += "#"
+        screen += "█"
     else:
         screen += "."
 
