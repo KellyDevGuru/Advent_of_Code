@@ -1,4 +1,6 @@
 import re
+from functools import reduce
+
 
 with open('input11.txt', 'r') as file:
     content = [line for line in file.readlines()]
@@ -9,18 +11,20 @@ class Monkey:
     def __init__(self, number, items, worry_level, test, t, f):
         self.number = number
         self.items = items
-        self.worry_level = eval(re.sub(r'\bold\b', str(items[0]), worry_level))
+        self.worry_level = worry_level
         self.test = test
         self.t = t
         self.f = f
 
-    def throw_item_to(self):
-        self.items.pop(0)
-        new_worry = self.worry_level // 3
-        if new_worry % self.test:
+    def throw_item(self, item):
+        new_worry = (eval(re.sub(r'\bold\b', str(item), self.worry_level))) // 3
+        if new_worry % self.test == 0:
             return self.t, new_worry
         else:
             return self.f, new_worry
+
+    def receive_item(self, new_item):
+        self.items.append(new_item)
 
 
 # Initializing lists to store monkey data
@@ -49,6 +53,28 @@ for line in content:
 
 monkeys_dict = {monkey.number: monkey for monkey in monkeys}
 
+inspected = 0
+monkey_inspected = {}
 
 
+for x in range(20):
+    for monkey in monkeys_dict.values():
+        for item in monkey.items:
+            inspected += 1
+            monkey_number, value = monkey.throw_item(item)
+            monkeys_dict[monkey_number].receive_item(value)
+            print(f"Monkey {monkey_number} received {value}")
+        monkey.items = []
+        print(f"Monkey {monkey.number} inspected {inspected} items after round {x}")
+        # Initialize the count if the monkey number is not already in the dictionary
+        if monkey.number not in monkey_inspected:
+            monkey_inspected[monkey.number] = 0
 
+        # Increment the count for the inspected items for the current monkey
+        monkey_inspected[monkey.number] += inspected
+        inspected = 0
+
+# Part 1
+two_monkeys = sorted(monkey_inspected.values(), reverse=True)[:2]
+result = reduce(lambda x, y: x * y, two_monkeys)
+print(result)
