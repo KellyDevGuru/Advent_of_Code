@@ -1,4 +1,4 @@
-import random
+from collections import deque
 
 with open('input12.txt', 'r') as file:
     heightmap = [x.strip() for x in file]
@@ -13,34 +13,33 @@ for i_y, y in enumerate(heightmap):
 
 
 def neighbours(coordinate, dictionary):
-
     x, y = coordinate
     candidates = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
     return [p for p in candidates if p in dictionary]
 
 
-def step_to(neighbours, coordinate, dictionary):
-    possible_steps = []
+def bfs(start, end, graph):
+    queue = deque([(start, [])])
+    visited = set()
 
-    if coordinate == start_point:  # Handle starting point differently
-        for n in neighbours:
-            if ord('a') + 1 <= ord(dictionary[n]):
-                possible_steps.append(n)
+    while queue:
+        current, path = queue.popleft()
+        if current == end:
+            return path
+        visited.add(current)
+        for neighbor in neighbours(current, graph):
+            if graph[current] == 'S':
+                queue.append((neighbor, path + [neighbor]))
+                visited.add(neighbor)
+            elif neighbor not in visited and ord(graph[neighbor]) <= (ord(graph[current]) + 1):
+                queue.append((neighbor, path + [neighbor]))
+                visited.add(neighbor)
+    return None
 
-    else:
-        for n in neighbours:
-            if ord(dictionary[coordinate]) + 1 <= ord(dictionary[n]):
-                possible_steps.append(n)
 
-    return random.choice(possible_steps)
-
-
-next_step = None
-
-while next_step != (136, 20):
-    nearby_neighbors = neighbours(start_point, grid)
-    if start_point == (137, 20):
-        break  # Step out of while if start_point is on coordinate with letter 'z'
-    next_step = step_to(nearby_neighbors, start_point, grid)
-    start_point = next_step
-    print(next_step)
+path = bfs(start_point, end_point, grid)
+if path:
+    print("Path found for Part 1:", path)
+    print(len((path)))
+else:
+    print("No path found.")
